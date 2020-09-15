@@ -13,7 +13,7 @@ const db = firebase
       privateKey: process.env.GCS_PRIVATE_KEY.replace(/\\n/g, "\n")
     }),
   })
-  .firestore();
+  .firestore(); 
 
 let setProductList = async (data) => {
     let productCollection = db.collection('products')
