@@ -7,4 +7,8 @@ const server = express();
 var productJob = schedule.scheduleJob('1 0 * * *', job.getProductList)
 var brandJob = schedule.scheduleJob('0 0 * * *', job.getBrandList)
 
+server.listen(PORT, function() {
+    console.log("Example skill server listening on port " + PORT);
+});
+
 module.exports = server;
