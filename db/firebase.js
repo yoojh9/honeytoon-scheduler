@@ -15,8 +15,6 @@ const db = firebase
   })
   .firestore();
 
-//const db = firebase.firestore();
-
 let setProductList = async (data) => {
     let productCollection = db.collection('products')
     await productCollection.doc(data.brandCode).collection('product').doc(data.goodsCode).set(data);
