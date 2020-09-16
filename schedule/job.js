@@ -26,7 +26,17 @@ let getBrandList = async () => {
     }
 }
 
+let updateLeaderBoard = async () => {
+    try {
+        console.log('start updating leader board');
+        await db.updateLeaderBoard();
+    } catch(error) {
+        console.error(error);
+    }
+}
+
 module.exports = {
     getProductList,
-    getBrandList
+    getBrandList,
+    updateLeaderBoard
 }
