@@ -1,5 +1,5 @@
 const express = require('express');
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 const job = require('./schedule/job');
 const schedule = require('node-schedule');
 const server = express();
