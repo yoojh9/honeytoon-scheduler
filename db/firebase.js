@@ -26,6 +26,44 @@ let setBrandList = async (data) => {
     await brandCollection.doc(data.brandCode).set(data);
 }
 
+let getCouponList = async () => {
+  let couponRef = db.collection('coupon');
+  let coupons = [];
+
+  let owners = await couponRef.listDocuments();
+
+  for(owner of owners){
+    console.log('owner:'+owner.id);
+    let notUsedCoupons = await couponRef.doc(owner.id).collection('coupons').where('use','==','N').get();
+
+    for(const notUsedCoupon of notUsedCoupons.docs){
+      console.log('notUsedCoupon:'+notUsedCoupon.data())
+      coupons.push({uid: owner.id, trid: notUsedCoupon.id, use: notUsedCoupon.data()['use']})
+    }
+  }
+  // await couponRef.get().then(async snapshot => {
+  //   console.log('snapshot:'+snapshot);
+  //   let 
+  //   snapshot.forEach(doc => {
+  //     console.log('data:'+doc.data());
+  //    let couponSnapshot = couponRef.doc(doc.id).collection('coupons').where('use',"==",'N').get();
+  //     couponSnapshot.forEach(couponDoc => {
+  //       console.log('coupons:'+ couponDoc.data())
+  //       coupons.add({ uid: doc.id, trid : couponDoc.id, use: couponDoc.data()['use']})
+  //     })
+  //   })
+  // })
+
+  return coupons;
+}
+
+let updateCouponStatus = async(coupon, used) => {
+  if(used){
+    await db.collection('coupon').doc(coupon.uid).collection('coupons').doc(coupon.trid).update('use', 'Y')
+  } 
+  return;
+}
+
 let updateLeaderBoard = async (data) => {
   let batch = db.batch();
   let rankCollection = db.collection('ranks');
@@ -36,16 +74,16 @@ let updateLeaderBoard = async (data) => {
     await db.runTransaction(async transaction  =>  {
       let ranks = await transaction.get(rankCollection);
 
+      // 저장되어있는 ranks document 삭제
       for(const rank of ranks.docs){
-        console.log('delete data : ' + rank)
         await batch.delete(rank.ref);
       }
 
       let rankUsers = await transaction.get(userQuery);
-      let rank = 0;
 
+      // ranks에 새로운 document 추가
+      let rank = 0;
       for(const rankUser of rankUsers.docs){
-        console.log('set rank data : ' + rankUser);
         await transaction.set(rankCollection.doc(rankUser.id), {
           'uid': rankUser.id,
           'rank': (++rank),
@@ -64,5 +102,7 @@ let updateLeaderBoard = async (data) => {
 module.exports = {
     setProductList,
     setBrandList,
-    updateLeaderBoard
+    getCouponList,
+    updateLeaderBoard,
+    updateCouponStatus
 }

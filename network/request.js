@@ -40,6 +40,11 @@ let getBrandList = async () => {
     return data;
 }
 
+let getCouponStatus = async (trid) => {
+    let couponStatus = await requestCouponStatusApi(trid);
+    return couponStatus;
+}
+
 let requestProductListApi = async (start, size) => {
     console.log('requestProductListApi');
     var formData = new FormData();
@@ -102,7 +107,38 @@ let requestBrandListApi = async (start, size) => {
     }
 }
 
+let requestCouponStatusApi = async (trid) => {
+    console.log('requestCouponStatusApi');
+    var formData = new FormData();
+    formData.append('custom_auth_code', CUSTOM_AUTH_CODE);
+    formData.append('custom_auth_token', CUSTOM_AUTH_TOKEN);
+    formData.append('api_code', '0201');
+    formData.append('dev_yn', 'N');
+    formData.append('tr_id', trid)
+
+    try {
+        let res = await axios({
+            url: 'https://bizapi.giftishow.com/bizApi/coupons',
+            method: 'post',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Accept': 'application/json',
+                'custom_auth_code': CUSTOM_AUTH_CODE,
+                'custom_auth_token': CUSTOM_AUTH_TOKEN,
+                'api_code': '0201',
+                'dev_yn': DEV_YN,
+                ...formData.getHeaders(),
+            },
+            data: formData
+        })
+        return res.data.result[0].couponInfoList[0];
+    } catch(error){
+        console.log('error='+error);
+    }
+}
+
 module.exports = {
     getProductList,
-    getBrandList
+    getBrandList,
+    getCouponStatus,
 }

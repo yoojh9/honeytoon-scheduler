@@ -26,6 +26,23 @@ let getBrandList = async () => {
     }
 }
 
+let updateCouponStatus = async() => {
+    try {
+        console.log('updateCouponStatus')
+        let coupons = await db.getCouponList();
+        for(let coupon of coupons){
+        console.log('coupon:'+coupon)
+        let couponStatus = await request.getCouponStatus(coupon.trid)
+        if(couponStatus.pinStatusCd!="01"){  // pinCode가 01(발행)이 아닌 경우
+            let used = true;
+            await db.updateCouponStatus(coupon, used)
+        }
+        }
+    } catch(error){
+        console.error(error);
+    }
+}
+
 let updateLeaderBoard = async () => {
     try {
         console.log('start updating leader board');
@@ -38,5 +55,6 @@ let updateLeaderBoard = async () => {
 module.exports = {
     getProductList,
     getBrandList,
-    updateLeaderBoard
+    updateLeaderBoard,
+    updateCouponStatus
 }

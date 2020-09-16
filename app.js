@@ -6,7 +6,8 @@ const server = express();
 
 var productJob = schedule.scheduleJob('5 0 * * *', job.getProductList)
 var brandJob = schedule.scheduleJob('0 0 * * *', job.getBrandList)
-var updateLeaderBoardJob = schedule.scheduleJob("15 0 * * * ", job.updateLeaderBoard)
+var updateLeaderBoardJob = schedule.scheduleJob("15 0 * * *", job.updateLeaderBoard)
+var updateCouponSatatus = schedule.scheduleJob("30 0 * * *", job.updateCouponStatus);
 
 server.listen(port, function() {
     console.log("Example skill server listening on port " + port);
