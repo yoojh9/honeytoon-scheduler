@@ -26,6 +26,10 @@ let setBrandList = async (data) => {
     await brandCollection.doc(data.brandCode).set(data);
 }
 
+let updateAuthorRanking = async (data) => {
+  
+}
+
 module.exports = {
     setProductList,
     setBrandList
