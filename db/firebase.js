@@ -19,6 +19,7 @@ let setProductList = async (data) => {
 }
 
 let setBrandList = async (data) => {
+  console.log('db='+db);
     let brandCollection = db.collection('brands')
     await brandCollection.doc(data.brandCode).set(data);
 }
