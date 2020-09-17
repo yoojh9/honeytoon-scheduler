@@ -19,7 +19,7 @@ let getBrandList = async () => {
         console.log('start getting brand list');
         let list = await request.getBrandList();
         for(let item of list) {
-            console.log('brand:'+item);
+            console.log('brand:'+item);n
             await db.setBrandList(item)
         }
     } catch(error){
