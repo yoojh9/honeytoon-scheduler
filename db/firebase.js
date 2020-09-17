@@ -13,6 +13,7 @@ const db = firebase
       clientEmail: process.env.GCS_CLIENT_EMAIL,
       privateKey: process.env.GCS_PRIVATE_KEY.replace(/\\n/g, "\n")
     }),
+    databaseURL: "https://honeytoon-server.firebaseio.com",
   })
   .firestore(); 
 
