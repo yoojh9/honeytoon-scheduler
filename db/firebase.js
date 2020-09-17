@@ -4,7 +4,6 @@ const firebase = require("firebase-admin");
 const db = firebase
   .initializeApp({
     credential: firebase.credential.cert({
-      apiKey: process.env.FIREBASE_API_KEY,
       projectId: process.env.GCS_PROJECT_ID,
       clientEmail: process.env.GCS_CLIENT_EMAIL,
       privateKey: process.env.GCS_PRIVATE_KEY.replace(/\\n/g, "\n")
@@ -19,7 +18,7 @@ let setProductList = async (data) => {
 }
 
 let setBrandList = async (data) => {
-  console.log('db='+db);
+
     let brandCollection = db.collection('brands')
     await brandCollection.doc(data.brandCode).set(data);
 }
